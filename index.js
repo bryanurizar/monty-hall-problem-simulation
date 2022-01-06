@@ -1,38 +1,38 @@
+// A simulation of the Monty Hall Problem
+
+// Randomly sets a 1 behind a door
 function doorConfig() {
     const doors = [0, 0, 0];
     doors[Math.floor(Math.random() * 3)] = 1;
     return doors;
 }
 
-function keepStrategy(attempts) {
+function montyHallProblemSimulation(attempts) {
     const doors = doorConfig();
-    let doorProbability = 0;
+    let keepDoorCorrectCount = 0;
+    let switchDoorCorrectCount = 0;
+
     for (
-        let chosenDoorsIdx = Math.floor(Math.random() * 3), i = 0;
+        let randomlyChosenDoorIdx = Math.floor(Math.random() * 3), i = 0;
         i < attempts;
         i++
     ) {
-        doors[chosenDoorsIdx] === 1 ? doorProbability++ : doorProbability;
-        chosenDoorsIdx = Math.floor(Math.random() * 3);
-    }
+        // The initial choice determines the probability of selecting the correct door
+        doors[randomlyChosenDoorIdx] === 1
+            ? keepDoorCorrectCount++
+            : keepDoorCorrectCount;
 
-    return Math.round((doorProbability / attempts) * 100) + '%';
+        // If the initial choice is a 0 or 1 then switching produces 1 or 0 respectively as the host always opens an incorrect door
+        doors[randomlyChosenDoorIdx] === 1
+            ? switchDoorCorrectCount
+            : switchDoorCorrectCount++;
+
+        randomlyChosenDoorIdx = Math.floor(Math.random() * 3);
+    }
+    return [
+        Math.round((keepDoorCorrectCount / attempts) * 100) + '%',
+        Math.round((switchDoorCorrectCount / attempts) * 100) + '%',
+    ];
 }
 
-function changeStrategy(attempts) {
-    const doors = doorConfig();
-    let doorProbability = 0;
-
-    for (
-        let chosenDoorsIdx = Math.floor(Math.random() * 3), i = 0;
-        i < attempts;
-        i++
-    ) {
-        doors[chosenDoorsIdx] === 1 ? doorProbability : doorProbability++;
-        chosenDoorsIdx = Math.floor(Math.random() * 3);
-    }
-    return Math.round((doorProbability / attempts) * 100) + '%';
-}
-
-console.log('Keep Door Strategy: ' + keepStrategy(1_000_000));
-console.log('Switch Door Strategy: ' + changeStrategy(1_000_000));
+console.log(montyHallProblemSimulation(1_000_000));
