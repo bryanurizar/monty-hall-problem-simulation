@@ -35,4 +35,4 @@ function montyHallProblemSimulation(attempts) {
     ];
 }
 
-console.log(montyHallProblemSimulation(1_000_000));
+console.log(montyHallProblemSimulation(1_000_000)); // => [33%, 67%]
